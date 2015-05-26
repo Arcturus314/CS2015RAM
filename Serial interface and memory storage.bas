@@ -2,7 +2,7 @@ B0 = 1
 B1 = 32
 B2 = 1
 B6 = 0
-
+B9 = 0
 
 setfreq em64
 
@@ -17,6 +17,28 @@ HIGH A.1
 LOW B.5
 LOW B.6
 LOW B.7
+do
+loop
+input B.2
+	do
+	loop while pinB.1 = 1
+		HIGH B.3
+	do
+	loop while pinB.2 = 1
+		LOW B.3
+TIMER 65535
+IF TIMER = 3200000
+THEN
+	IF pinB.2 = 1
+	THEN
+	B9 = 1
+GOSUB SERDATAREAD
+HIGH B.3
+loop while B9 = 0
+
+
+	
+	
 	
 
 rem | This will store whatever is read from the serial bus into variable B7
