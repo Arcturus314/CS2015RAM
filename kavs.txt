@@ -2,6 +2,7 @@ B0 = 1
 B1 = 32
 B2 = 1
 B6 = 0
+B9 = 0
 
 
 setfreq em64
@@ -18,15 +19,28 @@ LOW B.5
 LOW B.6
 LOW B.7
 
-rem | SKYLAR'S CODE	
+rem | SKYLAR'S CODE
 IF B.1 = 1
 	GOSUB DATAWRITE
 	B.1 = 0
 	B.2 = 0
 	IF B.3 = 0
-		WAIT 200
-		IF B.2 = 0
-			RETURN
+		settimer count 65535
+		pause 10
+		IF B9 > 0 
+			THEN 
+			DO WHILE pinb.1 = 0
+			
+				ENDIF
+					
+		IF debug <= 200 && B.2 = 0	
+			THEN
+			B9 = B9 OR 00000001
+			B.3 = 1
+			WAIT 60
+			B.3 = 0
+			
+			ENDIF
 		ELSE
 			B.3 = 1
 			WAIT 65
