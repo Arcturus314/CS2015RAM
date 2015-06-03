@@ -44,14 +44,35 @@ LOW B.6
 rem | allowing 200 milliseconds for talker to pull clockline to true
 PAUSE 200
 IF B.2 = LOW
+	A.2 HIGH
+	A.3 LOW
 	return
-rem | termination
+rem | if talker does not pull clockline to true, means an error has occured in transmission. LEDS will light to indicate error to user.
 IF B.2 = HIGH
+rem | if talker pulls clockline to true, means transmission was successful.
 	GOSUB SERDATAREAD
-
-	
-	
-	
+	input B.2
+	do
+	loop while pinB.1 = 1
+		HIGH B.3
+	do
+	loop while pinB.2 = 1
+		LOW B.3
+rem | sets clock, data lines to low
+LOW B.2
+LOW B.3
+rem | waits a millisecond or one thousand microseconds for clock line to be pulled to high
+PAUSE 1000
+rem | input from listener
+input B.2
+IF B.2 = HIGH
+	GOSUB SERDATAWRITE
+rem | if clock line is pulled high, means transmission was successful
+ELSE
+	HIGH A.2
+	HIGH A.3
+	return
+rem | if clock line is not pulled high, means something went wrong. LEDS are powered to show user that an error has occured.
 
 rem | This will store whatever is read from the serial bus into variable B7
 SERDATAREAD:
