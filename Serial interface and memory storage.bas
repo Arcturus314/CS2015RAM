@@ -17,6 +17,7 @@ HIGH A.1
 LOW B.5
 LOW B.6
 LOW B.7
+rem | setting value for B.2
 do
 loop
 input B.2
@@ -33,9 +34,20 @@ THEN
 	THEN
 	B9 = 1
 GOSUB SERDATAREAD
+rem | setting dataline high for handshake
 HIGH B.3
 loop while B9 = 0
-
+rem | reading a byte in from C64 w/ handshake
+HIGH B.5
+HIGH B.6
+LOW B.6
+rem | allowing 200 milliseconds for talker to pull clockline to true
+PAUSE 200
+IF B.2 = LOW
+	return
+rem | termination
+IF B.2 = HIGH
+	GOSUB SERDATAREAD
 
 	
 	
